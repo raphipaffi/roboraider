@@ -1,0 +1,26 @@
+<robot name="RoboRaider">
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.0935" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://roboraider/description/roboraiderGeom.stl"/>
+      </geometry>
+      <material name="grey">
+        <color rgba="0.4 0.4 0.4 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.165" rpy="0 0 0" />
+      <geometry>
+        <box size="0.360 0.380 0.330" />
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="4.0"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+</robot>

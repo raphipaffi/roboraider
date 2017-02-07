@@ -1,0 +1,30 @@
+<launch>
+	<param name="robot_description" textfile="$(find roboraider)/description/roboraider.urdf" />
+
+	<node pkg="roboraider" type="arduino_node.py" name="Arduino" required="true">
+		<param name="port" value="/dev/ttyACM0"/>
+		<param name="baud" value="115200"/>
+		<param name="com_timeout" value="0.5"/>
+		<param name="base_frame" value="base_link"/>
+		<param name="node_rate" value="30"/>
+		<param name="cmd_vel_timeout" value="1"/>
+		<param name="acc_lim" value="2.0"/>
+		<param name="acc_lim_diff" value="5.0"/>
+	</node>
+
+	<node pkg="tf" type="static_transform_publisher" name="base_to_xtion_broadcaster" 
+		args="-0.112 0.0375 0.3175 0 0 0 base_link camera_depth_frame 100" />
+<!--	<node pkg="tf" type="static_transform_publisher" name="base_to_rgbcamera_broadcaster"
+                args="-0.112 0.0125 0.3175 -1.57 0 -1.57 base_link camera_rgb_optical_frame 100" />-->
+
+	<include file="$(find roboraider)/launch/fake_laser.launch" >
+		<arg name="skipframes" value="1" />
+		<arg name="fpscan_enable" value="False" />
+	</include>
+
+	<include file="$(find roboraider)/launch/gmapping.launch" />
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find roboraider)/rviz/gmapping.rviz" />
+
+	<!-- rosrun map_server map_saver -f `rospack find roboraider`/maps/map_empty_app3 -->
+</launch>
