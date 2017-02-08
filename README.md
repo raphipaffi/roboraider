@@ -1,19 +1,17 @@
-# roboraider
-This is a ROS package for my home-built robot. The package has been developed using
+# RoboRaider
+This is a ROS package for my home-built robot. The package requires
 * [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/)
 * [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu)
-* [Setup ROS](http://www.xaxxon.com/documentation/view/oculus-prime-ros-installation)
-
-Dependencies:
-* depthimage_to_laserscan
-* openni2_camera
-* for a working teleop panel in rviz: modified visualization_tutorials by me
+* ROS Package depthimage_to_laserscan
+* ROS Package openni2_camera
+* Arduino 1.6.8
+* for a working tele-op panel in rviz: modified visualization_tutorials
 
 Arduino libraries needed to compile the Arduino code for the low level controller:
 * BMSerial
-* LiquidCrystal_I2C
-* RoboClaw
-* UM7 (extended by me)
+* LiquidCrystal_I2C [www.archiduino.com/liquidcrystal_i2c-h-library-arduino-ide-1-6-x/](http://www.archiduino.com/liquidcrystal_i2c-h-library-arduino-ide-1-6-x/)
+* RoboClaw 2x15A Motor Controller [www.ionmc.com/downloads](http://www.ionmc.com/downloads)
+* My own version of UM7 [github.com/raphipaffi/UM7](https://github.com/raphipaffi/UM7)
 
 # Installation of Xubuntu
 (Most of these steps were copied from [OculusPrime Setup](http://www.xaxxon.com/documentation/view/oculus-prime-xubuntu-setup))
