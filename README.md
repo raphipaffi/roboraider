@@ -2,8 +2,8 @@
 This is a ROS package for my home-built robot. The package requires
 * [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/)
 * [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu)
-* Arduino 1.6.8 [www.arduino.cc/en/main/software](https://www.arduino.cc/en/main/software)
-* for a working tele-op panel in rviz: modified visualization_tutorials
+* [Arduino 1.6.8](https://www.arduino.cc/en/main/software)
+* for a working tele-op panel in rviz: modified [ROS Visualization Tutorials](http://wiki.ros.org/visualization_tutorials)
 
 Arduino libraries needed to compile the Arduino code for the low level controller:
 * BMSerial [github.com/KurtE/Orion/tree/master/Libraries/BMSerial](https://github.com/KurtE/Orion/tree/master/Libraries/BMSerial)
