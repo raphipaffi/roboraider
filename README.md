@@ -16,7 +16,7 @@ Arduino libraries needed to compile the Arduino code for the low level controlle
 * UM7 (extended by me)
 
 # Installation of Xubuntu
-(Most of these steps were copied from [OcculusPrime Setup](http://www.xaxxon.com/documentation/view/oculus-prime-xubuntu-setup))
+(Most of these steps were copied from [OculusPrime Setup](http://www.xaxxon.com/documentation/view/oculus-prime-xubuntu-setup))
 * Download [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/).
 * When given the choice, set to LOGIN AUTOMATICALLY.
 * Connect to your wifi network, set to “automatically connect when available” and use a static IP.
@@ -33,7 +33,7 @@ Arduino libraries needed to compile the Arduino code for the low level controlle
 * when applications crash, they ask if you want to send a report. Disable this feature by editing the file /etc/default/apport and change the line: enabled=1 to 0
 * Go to Settings > Software and Udates and click on the 'Updates' tab. Switch ‘Automatically Check for Updates’ to ‘Never’
 * It should be OK to work on the system remotely from here onward.
-* Go to [www.google.com/chrome/browser](www.google.com/chrome/browser), download the 64-bit ‘.deb’ package and install it using Software Center.
+* Go to [www.google.com/chrome/browser](http://www.google.com/chrome/browser), download the 64-bit ‘.deb’ package and install it using Software Center.
 * RUN GOOGLE CHROME FROM THE MENU AT LEAST ONCE – choose the ‘set as default browser’ option when prompted.
 * USB ports are only available to root by default in Ubuntu. To give yourself access: $ sudo adduser user_name dialout
 * Substitute “user_name” with your username. NOTE: reboot is required for this to take effect.
