@@ -1,5 +1,9 @@
 # roboraider
-This is a ROS package for my home-built robot. The development was done under Ubuntu 14.04 LTS and ROS Indigo.
+This is a ROS package for my home-built robot. The package has been developed under
+* [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/)
+  [Setup Xubuntu](http://www.xaxxon.com/documentation/view/oculus-prime-xubuntu-setup)
+* [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu)
+  [Setup ROS](http://www.xaxxon.com/documentation/view/oculus-prime-ros-installation)
 
 Dependencies:
 * depthimage_to_laserscan
