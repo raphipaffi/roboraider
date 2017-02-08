@@ -2,7 +2,7 @@
 This is a ROS package for my home-built robot. The package requires
 * [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/)
 * [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu)
-* Arduino 1.6.8
+* Arduino 1.6.8 [www.arduino.cc/en/main/software](https://www.arduino.cc/en/main/software)
 * for a working tele-op panel in rviz: modified visualization_tutorials
 
 Arduino libraries needed to compile the Arduino code for the low level controller:
@@ -35,7 +35,7 @@ $ x11vnc -display :0
 ```
 * Go to <b>Settings > Light Locker Settings</b>, turn everything to <b>Off</b>, set sliders to <b>0 minutes/never</b>.
 * Go to <b>Settings > Power Manager</b>, uncheck <b>Monitor Power Management Control</b> and go through the various tabs and set all the sliders to <b>0 minutes/never</b>.
-* If the system doesn’t shut down cleanly, sometimes the Grub boot manager will wait for a menu selection before booting. To avoid this, open the file: <b>/etc/default/grub</b> and add the line: <br />
+* If the system doesn’t shut down cleanly, sometimes the Grub boot manager will wait for a menu selection before booting. To avoid this, open the file <b>/etc/default/grub</b> and add the line: <br />
 ```
 GRUB_RECORDFAIL_TIMEOUT=0
 ```
@@ -86,18 +86,18 @@ $ git clone https://github.com/ros-drivers/openni2_camera.git
 ```
 * For the Orbbec Astra camera, drivers have to be installed manually: <br />
 ```
-mkdir ~/temp/
-cd ~/temp/
-wget http://www.xaxxon.com/downloads/orbbec_openni2_files.zip
-unzip orbbec_openni2_files.zip
-cd orbbec_openni2_files
-sudo mv 558-orbbec-usb.rules /etc/udev/rules.d/
-sudo adduser oculus video
-sudo mv libopenni2.pc /usr/lib/pkgconfig/
-cd /usr/lib/
-sudo mv ~/temp/orbbec_openni2_files/libOpenNI2.so .
-cd OpenNI2/
-sudo mv ~/temp/orbbec_openni2_files/* ./Drivers/
+$ mkdir ~/temp/
+$ cd ~/temp/
+$ wget http://www.xaxxon.com/downloads/orbbec_openni2_files.zip
+$ unzip orbbec_openni2_files.zip
+$ cd orbbec_openni2_files
+$ sudo mv 558-orbbec-usb.rules /etc/udev/rules.d/
+$ sudo adduser oculus video
+$ sudo mv libopenni2.pc /usr/lib/pkgconfig/
+$ cd /usr/lib/
+$ sudo mv ~/temp/orbbec_openni2_files/libOpenNI2.so .
+$ cd OpenNI2/
+$ sudo mv ~/temp/orbbec_openni2_files/* ./Drivers/
 ```
 * Add the new workspace to the default ROS environment by doing: <br />
 ```
