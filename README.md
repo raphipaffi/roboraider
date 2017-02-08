@@ -2,8 +2,6 @@
 This is a ROS package for my home-built robot. The package requires
 * [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/)
 * [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu)
-* ROS Package depthimage_to_laserscan
-* ROS Package openni2_camera
 * Arduino 1.6.8
 * for a working tele-op panel in rviz: modified visualization_tutorials
 
@@ -18,7 +16,7 @@ Arduino libraries needed to compile the Arduino code for the low level controlle
 * Download and install [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/).
 * When given the choice, set to <b>Login Automatically</b>.
 * Connect to your Wifi network, set to <b>Automatically connect when available</b> and use a static IP.
-* Go to `Settings > Software and Updates`, change package repository reference to <b>Main Server</b>.
+* Go to <b>Settings > Software and Updates</b>, change package repository reference to <b>Main Server</b>.
 * Update currently installed packages: <br />
 ```
 $ sudo apt get update
@@ -37,7 +35,10 @@ $ x11vnc -display :0
 ```
 * Go to <b>Settings > Light Locker Settings</b>, turn everything to <b>Off</b>, set sliders to <b>0 minutes/never</b>.
 * Go to <b>Settings > Power Manager</b>, uncheck <b>Monitor Power Management Control</b> and go through the various tabs and set all the sliders to <b>0 minutes/never</b>.
-* If the system doesn’t shut down cleanly, sometimes the Grub boot manager will wait for a menu selection before booting. To avoid this, open the file: <b>/etc/default/grub</b> and add the line: `GRUB_RECORDFAIL_TIMEOUT=0`
+* If the system doesn’t shut down cleanly, sometimes the Grub boot manager will wait for a menu selection before booting. To avoid this, open the file: <b>/etc/default/grub</b> and add the line: <br />
+```
+GRUB_RECORDFAIL_TIMEOUT=0
+```
 * Run: <br />
 ```
 $ sudo update-grub
@@ -47,7 +48,7 @@ $ sudo update-grub
 * Go to <b>Settings > Software and Udates</b> and click on the <b>Updates</b> tab. Switch <b>Automatically Check for Updates</b> to <b>Never</b>
 * It should be OK to work on the system remotely from here onward.
 * Go to [www.google.com/chrome/browser](http://www.google.com/chrome/browser), download the 64-bit ‘.deb’ package and install it using Software Center.
-* RUN GOOGLE CHROME FROM THE MENU AT LEAST ONCE – choose the <b>set as default browser</b> option when prompted.
+* Run Google Chrome from the menu once and choose <b>set as default browser</b>.
 * USB ports are only available to root by default in Ubuntu. To give yourself access:
 ```
 $ sudo adduser user_name dialout
@@ -68,12 +69,12 @@ $ sudo apt-get install git
 ```
 * Create a ROS Workspace in your home folder by entering: <br />
 ```
-$ mkdir -p ~/catkin_ws/src <br />
-$ cd ~/catkin_ws/src <br />
-$ catkin_init_workspace <br />
-$ cd ~/catkin_ws/ <br />
-$ catkin_make <br />
-$ cd ~/catkin_ws/src <br />
+$ mkdir -p ~/catkin_ws/src
+$ cd ~/catkin_ws/src
+$ catkin_init_workspace
+$ cd ~/catkin_ws/
+$ catkin_make
+$ cd ~/catkin_ws/src
 ```
 * Clone the modified depthimage_to_laserscan package: <br />
 ```
@@ -85,18 +86,18 @@ $ git clone https://github.com/ros-drivers/openni2_camera.git
 ```
 * For the Orbbec Astra camera, drivers have to be installed manually: <br />
 ```
-mkdir ~/temp/ <br />
-cd ~/temp/ <br />
-wget http://www.xaxxon.com/downloads/orbbec_openni2_files.zip <br />
-unzip orbbec_openni2_files.zip <br />
-cd orbbec_openni2_files <br />
-sudo mv 558-orbbec-usb.rules /etc/udev/rules.d/ <br />
-sudo adduser oculus video <br />
-sudo mv libopenni2.pc /usr/lib/pkgconfig/ <br />
-cd /usr/lib/ <br />
-sudo mv ~/temp/orbbec_openni2_files/libOpenNI2.so . <br />
-cd OpenNI2/ <br />
-sudo mv ~/temp/orbbec_openni2_files/* ./Drivers/ <br />
+mkdir ~/temp/
+cd ~/temp/
+wget http://www.xaxxon.com/downloads/orbbec_openni2_files.zip
+unzip orbbec_openni2_files.zip
+cd orbbec_openni2_files
+sudo mv 558-orbbec-usb.rules /etc/udev/rules.d/
+sudo adduser oculus video
+sudo mv libopenni2.pc /usr/lib/pkgconfig/
+cd /usr/lib/
+sudo mv ~/temp/orbbec_openni2_files/libOpenNI2.so .
+cd OpenNI2/
+sudo mv ~/temp/orbbec_openni2_files/* ./Drivers/
 ```
 * Add the new workspace to the default ROS environment by doing: <br />
 ```
