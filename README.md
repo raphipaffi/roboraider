@@ -16,9 +16,9 @@ Arduino libraries needed to compile the Arduino code for the low level controlle
 # Installation of Xubuntu
 (Most of these steps were copied from [OculusPrime Setup](http://www.xaxxon.com/documentation/view/oculus-prime-xubuntu-setup))
 * Download and install [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/).
-* When given the choice, set to LOGIN AUTOMATICALLY.
-* Connect to your wifi network, set to “automatically connect when available” and use a static IP.
-* Go to Settings > Software and Updates, change package repository reference to ‘Main’ or the United States.
+* When given the choice, set to <b>Login Automatically<b>.
+* Connect to your Wifi network, set to <b>Automatically connect when available<b> and use a static IP.
+* Go to `Settings > Software and Updates`, change package repository reference to <b>Main Server<b>.
 * Update currently installed packages: <br />
 ```
 $ sudo apt get update
@@ -35,19 +35,19 @@ $ sudo apt-get install x11vnc
 ```
 $ x11vnc -display :0
 ```
-* Go to Settings > Light Locker Settings, turn everything to OFF, set sliders to 0 minutes/never.
-* Go to Settings > Power Manager, uncheck ‘Monitor Power Management Control’ and go through the various tabs and set all the sliders to 0 minutes/never.
-* If the system doesn’t shut down cleanly, sometimes the Grub boot manager will wait for a menu selection before booting. To avoid this, open the file: `/etc/default/grub` and add the line: `GRUB_RECORDFAIL_TIMEOUT=0`
+* Go to <b>Settings > Light Locker Settings<b>, turn everything to <b>Off<b>, set sliders to <b>0 minutes/never<b>.
+* Go to <b>Settings > Power Manager<b>, uncheck <b>Monitor Power Management Control<b> and go through the various tabs and set all the sliders to <b>0 minutes/never<b>.
+* If the system doesn’t shut down cleanly, sometimes the Grub boot manager will wait for a menu selection before booting. To avoid this, open the file: <b>/etc/default/grub<b> and add the line: `GRUB_RECORDFAIL_TIMEOUT=0`
 * Run: <br />
 ```
 $ sudo update-grub
 ```
-* In case of disk checking on startup, you’ll want the system to repair any problems automatically. Edit the file `/etc/default/rcS` and change the line containing: `FSCKFIX=no`, to `FSCKFIX=yes`.
-* when applications crash, they ask if you want to send a report. Disable this feature by editing the file `/etc/default/apport` and change the line: `enabled=1` to `enabled=0`.
-* Go to Settings > Software and Udates and click on the 'Updates' tab. Switch ‘Automatically Check for Updates’ to ‘Never’
+* In case of disk checking on startup, you’ll want the system to repair any problems automatically. Edit the file <b>/etc/default/rcS<b> and change the line containing: `FSCKFIX=no`, to `FSCKFIX=yes`.
+* When applications crash, they ask if you want to send a report. Disable this feature by editing the file <b>/etc/default/apport<b> and change the line: `enabled=1` to `enabled=0`.
+* Go to <b>Settings > Software and Udates<b> and click on the <b>Updates<b> tab. Switch <b>Automatically Check for Updates<b> to <b>Never<b>
 * It should be OK to work on the system remotely from here onward.
 * Go to [www.google.com/chrome/browser](http://www.google.com/chrome/browser), download the 64-bit ‘.deb’ package and install it using Software Center.
-* RUN GOOGLE CHROME FROM THE MENU AT LEAST ONCE – choose the ‘set as default browser’ option when prompted.
+* RUN GOOGLE CHROME FROM THE MENU AT LEAST ONCE – choose the <b>set as default browser<b> option when prompted.
 * USB ports are only available to root by default in Ubuntu. To give yourself access:
 ```
 $ sudo adduser user_name dialout
