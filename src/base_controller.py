@@ -23,10 +23,12 @@ import roslib
 import rospy
 import os
 import arduino_driver
+import math
 
 from math import sin, cos, pi, degrees
 from geometry_msgs.msg import Quaternion, Twist, Pose
 from nav_msgs.msg import Odometry
+from sensor_msgs.msg import Range
 from tf.broadcaster import TransformBroadcaster
 
  
@@ -35,27 +37,28 @@ class BaseController:
     def __init__(self, arduino, base_frame):
         self.arduino		= arduino
         self.base_frame 	= base_frame
-        self.cmd_vel_timeout 	= float(rospy.get_param("~cmd_vel_timeout", 1.0))
-	self.acc_lim 		= float(rospy.get_param('~acc_lim', 0.5))
-	self.acc_lim_diff	= float(rospy.get_param('~acc_lim_diff', 0.5))
-
-	self.stopped = False
+        self.cmd_vel_timeout= float(rospy.get_param("~cmd_vel_timeout", 1.0))
+        self.acc_lim 		= float(rospy.get_param('~acc_lim', 0.5))
+        self.acc_lim_diff	= float(rospy.get_param('~acc_lim_diff', 0.5))
+        
+        self.stopped = False
 
         self.x = 0              # x coordinate of robot position [m]
         self.y = 0              # y coordinate of robot position [m]
         self.theta = 0          # orientation of robot [rad]
         self.v = 0              # linear velocity of robot (m/s)
         self.dtheta = 0         # angular velocity of robot (rad/s)
+        self.sonarDist = 0
 
         self.v_des = 0          # desired linear velocity based on cmd_vel (m/s)
         self.dtheta_des = 0     # desired angular velocity based on cmd_vel (rad/s)
 
         self.v_cmd = 0      	# common part of commanded velocity for left and right wheel (m/s)
         self.vdelta_cmd = 0     # difference of commanded velocities (vright-vleft) (m/s)
-
-	now = rospy.Time.now()
+        
+        now = rospy.Time.now()
         self.last_cmd_vel = now	# time of last cmd_vel callback
-	self.last_poll = now	# time of last cmd_vel callback
+        self.last_poll = now	# time of last cmd_vel callback
         
         # subscriptions
         rospy.Subscriber("cmd_vel", Twist, self.cmdVelCallback)
@@ -63,21 +66,24 @@ class BaseController:
         # Clear any old odometry info
         self.arduino.reset_odometry()
         
-        # Set up the odometry broadcaster
+        # Set up the odometry publisher and broadcaster
         self.odomPub = rospy.Publisher('odom', Odometry, queue_size=10)
         self.odomBroadcaster = TransformBroadcaster()
+        
+        # Set up the sonar range publisher
+        self.sonarPub = rospy.Publisher('sonar', Range, queue_size=10)
         
         rospy.loginfo("Started base controller")
         
     def poll(self):
-	now = rospy.Time.now()	
-	t_delta = now - self.last_poll
-
-	v_step      = self.acc_lim 	* t_delta.to_sec()
-	vdelta_step = self.acc_lim_diff * t_delta.to_sec()
+        now = rospy.Time.now()	
+        t_delta = now - self.last_poll
+        
+        v_step  = self.acc_lim * t_delta.to_sec()
+        vdelta_step = self.acc_lim_diff * t_delta.to_sec()
         
         # Read the odometry
-	pose = self.arduino.get_pose()
+        pose = self.arduino.get_pose()
         self.x      = pose[0]
         self.y      = pose[1]
         self.theta  = pose[2]
@@ -111,44 +117,59 @@ class BaseController:
         odom.twist.twist.angular.z = self.dtheta
 
         self.odomPub.publish(odom)
+        
+        
+        self.sonarDist = self.arduino.get_sonar_distance()
+        
+        sonar = Range()
+        sonar.header.frame_id = "sonar"
+        sonar.header.stamp = now
+        sonar.radiation_type = sonar.ULTRASOUND
+        sonar.field_of_view = 15.0 * math.pi/180.0
+        sonar.min_range = 0.02
+        sonar.max_range = 0.50
+        sonar.range = self.sonarDist
+        
+        self.sonarPub.publish(sonar)
+        
             
-        # if cmd_vel subsription timed out
+        # if cmd_vel subscription timed out
         if now > (self.last_cmd_vel + rospy.Duration(self.cmd_vel_timeout)):
             self.v_des = 0
             self.dtheta_des = 0
             
-	# calc commanded velocities
-	if self.v_des > self.v_cmd:
-		self.v_cmd += v_step
-		if self.v_des < self.v_cmd:
-		    self.v_cmd = self.v_des
-	else:
-		if self.v_des < self.v_cmd:
-		    self.v_cmd -= v_step
-		    if self.v_des > self.v_cmd:
-			self.v_cmd = self.v_des
-
-	if 0.454 * self.dtheta_des > self.vdelta_cmd:
-		self.vdelta_cmd += vdelta_step
-		if 0.454 * self.dtheta_des < self.vdelta_cmd:
-			self.vdelta_cmd = 0.454 * self.dtheta_des
-	else:
-		if 0.454 * self.dtheta_des < self.vdelta_cmd:
-			self.vdelta_cmd -= vdelta_step
-			if 0.454 * self.dtheta_des > self.vdelta_cmd:
-				self.vdelta_cmd = 0.454 * self.dtheta_des
+        # calculate commanded velocities
+        if self.v_des > self.v_cmd:
+            self.v_cmd += v_step
+            if self.v_des < self.v_cmd:
+                self.v_cmd = self.v_des
+        else:
+            if self.v_des < self.v_cmd:
+                self.v_cmd -= v_step
+                if self.v_des > self.v_cmd:
+                    self.v_cmd = self.v_des
+                    
+        if 0.454 * self.dtheta_des > self.vdelta_cmd:
+            self.vdelta_cmd += vdelta_step
+            if 0.454 * self.dtheta_des < self.vdelta_cmd:
+                self.vdelta_cmd = 0.454 * self.dtheta_des
+        else:
+            if 0.454 * self.dtheta_des < self.vdelta_cmd:
+                self.vdelta_cmd -= vdelta_step
+                if 0.454 * self.dtheta_des > self.vdelta_cmd:
+                    self.vdelta_cmd = 0.454 * self.dtheta_des
 
         vleft_cmd  = self.v_cmd - self.vdelta_cmd/2.0
         vright_cmd = self.v_cmd + self.vdelta_cmd/2.0
-
-	#rospy.loginfo("dtheta_des: " + str(self.dtheta_des) + " rad/s\tdtheta " + str(self.dtheta) + " rad/s\tvdelta_cmd " + str(self.vdelta_cmd) + " m/s")
-	rospy.loginfo("vleft_cmd: " + str(vleft_cmd) + " m/s\tvright_cmd " + str(vright_cmd) + " m/s")
+        
+        #rospy.loginfo("dtheta_des: " + str(self.dtheta_des) + " rad/s\tdtheta " + str(self.dtheta) + " rad/s\tvdelta_cmd " + str(self.vdelta_cmd) + " m/s")
+        rospy.loginfo("vleft_cmd: " + str(vleft_cmd) + " m/s\tvright_cmd " + str(vright_cmd) + " m/s")
 	
         # Set motor speeds
         if not self.stopped:
-		self.arduino.motor_command(vleft_cmd, vright_cmd)
+            self.arduino.motor_command(vleft_cmd, vright_cmd)
         
-	self.last_poll = now;
+        self.last_poll = now;
             
     def stop(self):
         self.stopped = True

@@ -2,17 +2,16 @@
   <arg name="scan_topic" default="scan" />
 
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
-    <remap from="scan" to="$(arg scan_topic)"/>  <!-- Laser scans to create the map from -->
-
     <param name="base_frame" value="base_link"/>
-    <param name="map_frame" value="map"/>
+    <param name="map_frame"  value="map"/>
     <param name="odom_frame" value="odom"/>
 
-    <param name="throttle_scans" value="2" />
+    <remap from="scan" to="$(arg scan_topic)"/>     <!-- Laser scans to create the map from -->
+    <param name="throttle_scans" value="2" />       <!-- Process 1 out of every this many scans -->
     <param name="map_update_interval" value="1.0"/> <!-- seconds -->
 
-    <param name="maxRange" value="6.0"/>
-    <param name="maxUrange" value="5.0"/>
+    <param name="maxUrange" value="5.0"/> <!-- The maximum usable range of the laser. A beam is cropped to this value. -->
+    <param name="maxRange" value="6.0"/>  <!--The maximum range of the sensor. If regions with no obstacles within the range of the sensor should appear as free space in the map, set maxUrange < maximum range of the real sensor <= maxRange. -->
 
     <param name="sigma" value="0.05"/>   <!-- The sigma used by the greedy endpoint matching -->
     <param name="kernelSize" value="1"/> <!-- The kernel in which to look for a correspondence -->
@@ -25,22 +24,22 @@
     <param name="minimumScore" value="500"/> <!-- Minimum score for considering the outcome of the scan matching good -->
 
     <!-- odometry noise model -->
-    <param name="srr" value="0.01"/>     <!-- Odometry error in translation as a function of translation (rho/rho) -->
-    <param name="srt" value="0.01"/>     <!-- Odometry error in translation as a function of rotation (rho/theta) -->
-    <param name="str" value="0.01"/>     <!-- Odometry error in rotation as a function of translation (theta/rho) -->
-    <param name="stt" value="0.01"/>     <!-- Odometry error in rotation as a function of rotation (theta/theta) -->
+    <param name="srr" value="0.005"/>     <!-- Odometry error in translation as a function of translation (rho/rho) -->
+    <param name="srt" value="0.005"/>     <!-- Odometry error in translation as a function of rotation (rho/theta) -->
+    <param name="str" value="0.005"/>     <!-- Odometry error in rotation as a function of translation (theta/rho) -->
+    <param name="stt" value="0.005"/>     <!-- Odometry error in rotation as a function of rotation (theta/theta) -->
 
-    <param name="linearUpdate" value="0.05"/>      <!-- Process a scan each time the robot translates this far -->
-    <param name="angularUpdate" value="0.08"/>  <!-- Process a scan each time the robot rotates this far -->
+    <param name="linearUpdate" value="0.05"/>     <!-- Process a scan each time the robot translates this far -->
+    <param name="angularUpdate" value="0.08"/>    <!-- Process a scan each time the robot rotates this far -->
     <param name="temporalUpdate" value="-1.0"/>   <!-- Process a scan if the last scan processed is older than the update time in seconds -->
     <param name="resampleThreshold" value="0.5"/> <!-- The Neff based resampling threshold -->
-    <param name="particles" value="50"/>         <!-- Number of particles in the filter -->
+    <param name="particles" value="50"/>          <!-- Number of particles in the filter -->
     
     <!-- Initial map size -->
-    <param name="xmin" value="-1.0"/>
-    <param name="ymin" value="-1.0"/>
-    <param name="xmax" value="1.0"/>
-    <param name="ymax" value="1.0"/>
+    <param name="xmin" value="-10.0"/>
+    <param name="ymin" value="-10.0"/>
+    <param name="xmax" value="10.0"/>
+    <param name="ymax" value="10.0"/>
     <param name="delta" value="0.02"/> <!-- Resolution of the map -->
 
     <param name="llsamplerange" value="0.01"/>  <!-- Translational sampling range for the likelihood -->

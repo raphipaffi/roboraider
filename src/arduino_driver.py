@@ -217,6 +217,9 @@ class Arduino:
         else:
             return values
 
+    def get_sonar_distance(self):
+        return self.execute('s', float);
+    
     def reset_odometry(self):
         return self.execute_ack('r')
 

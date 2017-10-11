@@ -1,0 +1,12 @@
+<launch>
+    <node pkg="roboraider" type="arduino_node.py" name="base_controller" required="true">
+        <param name="port" value="/dev/ttyACM0"/>
+        <param name="baud" value="115200"/>
+        <param name="com_timeout" value="0.5"/>
+        <param name="base_frame" value="base_link"/>
+        <param name="node_rate" value="20"/>
+        <param name="cmd_vel_timeout" value="1"/>
+        <param name="acc_lim" value="2.0"/>
+        <param name="acc_lim_diff" value="5.0"/>
+    </node>
+</launch>

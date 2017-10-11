@@ -1,0 +1,13 @@
+<launch>
+  <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
+    <param name="serial_port" value="/dev/ttyACM1"/>
+    <param name="serial_baud" value="115200"/>
+    <param name="frame_id" value="hokuyo_frame"/>
+    <param name="calibrate_time" value="true"/>
+    <param name="publish_intensity" value="false"/>
+    <param name="publish_multiecho" value="false"/>
+    <param name="angle_min" value="$(eval -120.0 * 3.1415927/180.0)"/>
+    <param name="angle_max" value="$(eval +120.0 * 3.1415927/180.0)"/>
+    <param name="skip" value="0"/>
+  </node>
+</launch>

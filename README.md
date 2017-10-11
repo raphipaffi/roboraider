@@ -107,6 +107,30 @@ $ echo "source $HOME/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
 
 
+# Useful commands
+sudo apt-get install ros-jade-<package-name>
+git clone https://github.com/<package-name>.git 
+
+rosrun rqt_reconfigure rqt_reconfigure
+rqt_console
+rqt_graph
+rqt_plot
+
+rostopic echo sonar
+rostopic hz sonar
+
+roscore
+roslaunch roboraider make_map.launch 
+roslaunch roboraider navigation.launch
+roslaunch roboraider test_odom.launch
+
+
+
+
+
+
+
+
 
 
 
