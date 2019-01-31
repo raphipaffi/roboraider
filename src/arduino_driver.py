@@ -194,6 +194,9 @@ class Arduino:
    
     def get_baud(self):
         return self.execute('b', int);
+    
+    def get_battery(self):
+        return self.execute('y', float);
 
     def get_cycletime(self):
         return self.execute('t', float);
@@ -227,6 +230,9 @@ class Arduino:
 	# rospy.loginfo("motor_command: m %+.2f %+.2f" %(v_left, v_right))
         return self.execute_ack('m %+.2f %+.2f' %(v_left, v_right))
 
+    def set_ip(self, ip):
+        return self.execute_ack('i %s' %ip)
+    
     def stop(self):
         self.motor_command(0, 0)
 

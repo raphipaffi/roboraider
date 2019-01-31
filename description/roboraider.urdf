@@ -1,26 +1,95 @@
 <robot name="RoboRaider">
-  <link name="base_link">
-    <visual>
-      <origin xyz="0 0 0.0935" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://roboraider/description/roboraiderGeom.stl"/>
-      </geometry>
-      <material name="grey">
-        <color rgba="0.4 0.4 0.4 1.0"/>
-      </material>
-    </visual>
 
-    <collision>
-      <origin xyz="0 0 0.165" rpy="0 0 0" />
-      <geometry>
-        <box size="0.360 0.380 0.330" />
-      </geometry>
-    </collision>
-
-    <inertial>
-      <mass value="4.0"/>
-      <origin xyz="0 0 0"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
-    </inertial>
-  </link>
+    <link name="base_link">
+        <!-- main body -->
+        <visual>
+            <geometry>
+                <mesh filename="package://roboraider/description/RoboRaiderGeometry_body.stl"/>
+            </geometry>
+            <material name="yellow">
+                <color rgba="1.0 0.75 0 1"/>
+            </material>
+            <origin xyz="0 0 0.0935" rpy="0 0 0" />
+        </visual>
+        
+        <!-- bumper -->
+        <visual>
+            <geometry>
+                <mesh filename="package://roboraider/description/RoboRaiderGeometry_bumper.stl"/>
+            </geometry>
+            <material name="grey">
+                <color rgba="0.2 0.2 0.2 1.0"/>
+            </material>
+            <origin xyz="0 0 0.0935" rpy="0 0 0" />
+        </visual>
+        
+        <!-- wheels -->
+        <visual>
+            <geometry>
+                <mesh filename="package://roboraider/description/RoboRaiderGeometry_wheels.stl"/>
+            </geometry>
+            <material name="grey">
+                <color rgba="0.2 0.2 0.2 1.0"/>
+            </material>
+            <origin xyz="0 0 0.0835" rpy="0 0 0" />
+        </visual>
+        
+        <!-- Orbbec sensor -->
+        <visual>
+            <geometry>
+                <mesh filename="package://roboraider/description/RoboRaiderGeometry_orbbec.stl"/>
+            </geometry>
+            <material name="grey">
+                <color rgba="0.2 0.2 0.2 1.0"/>
+            </material>
+            <origin xyz="-0.112 0 0.2835" rpy="0 0 0" />
+        </visual>
+        
+        <!-- rplidar sensor 
+        <visual>
+            <geometry>
+                <mesh filename="package://roboraider/description/rplidar-a2m4-r1.stl"/>
+            </geometry>
+            <material name="darkgrey">
+                <color rgba="0.2 0.2 0.2 1.0"/>
+            </material>
+            <origin xyz="0 0 0.1885" rpy="0 0 0"/>
+        </visual>
+        -->
+        <collision>
+            <geometry>
+                <box size="0.360 0.380 0.330" />
+            </geometry>
+            <origin xyz="0 0 0.165" rpy="0 0 0" />
+        </collision>
+    </link>
+    
+    <link name="rplidar_sensor_frame">
+    </link>
+    
+    <link name="orbbec_sensor_frame">
+    </link>
+    
+    <link name="sonar_sensor_frame">
+    </link>
+    
+        
+    <joint name="base_to_rplidar_sensor_frame" type="fixed">
+        <parent link="base_link"/>
+        <child  link="rplidar_sensor_frame"/>
+        <origin xyz="0.075 0 0.2193" rpy="0 0 3.1415927"/>
+    </joint>
+    
+    <joint name="base_to_orbbec_sensor_frame" type="fixed">
+        <parent link="base_link"/>
+        <child  link="orbbec_sensor_frame"/>
+        <origin xyz="-0.112 0.0375 0.3175"/>
+    </joint>
+    
+    <joint name="base_to_sonar_sensor_frame" type="fixed">
+        <parent link="base_link"/>
+        <child  link="sonar_sensor_frame"/>
+        <origin xyz="0.16 0.0 0.065"/>
+    </joint>
+       
 </robot>

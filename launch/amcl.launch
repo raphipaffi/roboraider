@@ -29,12 +29,12 @@
     <param name="laser_min_range" value="-1.0"/>
     <param name="laser_max_range" value="6.0"/>
     <param name="laser_max_beams" value="60"/>
-    <param name="laser_z_hit" value="0.95"/> <!--  0.5 -->
-    <param name="laser_z_short" value="0.1"/> <!--  0.05 -->
+    <param name="laser_z_hit" value="0.95"/>  <!-- used for likelihood field -->
+    <param name="laser_z_short" value="0.1"/>
     <param name="laser_z_max" value="0.05"/>
-    <param name="laser_z_rand" value="0.05"/> <!--  0.5 -->
-    <param name="laser_sigma_hit" value="0.2"/>
-    <param name="laser_lambda_short" value="0.1"/>
+    <param name="laser_z_rand" value="0.05"/>   <!-- used for likelihood field -->
+    <param name="laser_sigma_hit" value="0.2"/> <!--std. dev. of Gaussian noise in range measurement -->
+    <param name="laser_lambda_short" value="0.1"/> <!--parameter of exponential likelihood modeling unexpected (dynamic) objects in the range between sensor and fixed object in map. more dynamic objects > larger lambda -->
     <param name="laser_likelihood_max_dist" value="2.0"/>
     
     <!-- initial pose -->

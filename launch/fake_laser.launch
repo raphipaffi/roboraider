@@ -1,11 +1,14 @@
 <launch>
     <!-- Launch the OpenNI driver -->
+	
 	<arg name="camera"      default="camera"/>
 	<arg name="publish_tf"  default="false"/>
 	<arg name="skipframes"  default="0"/>
+	
 	<arg name="depth_registration" default="false"/>
 	<arg     if="$(arg depth_registration)" name="depth" value="depth_registered" />
 	<arg unless="$(arg depth_registration)" name="depth" value="depth" />
+	
 	<param name="/camera/driver/data_skip" value="$(arg skipframes)" />
 
 	<include file="$(find roboraider)/launch/openni2.launch" >
@@ -17,6 +20,7 @@
 	
 	
 	<!-- Run the depthimage_to_laserscan node -->
+	<arg name = "frame_id"      default="/$(arg camera)_depth_frame"/>
 	<arg name = "scan_topic"    default="scan"/>
 	<arg name = "fpscan_enable" default="true"/>
 	
@@ -24,7 +28,7 @@
         <param name="scan_height" value="5"/> <!-- Pixel rows to use to generate the laserscan. For each column, the scan will return the minimum value for those pixels centered vertically in the image. -->
         <param name="range_min" value="0.45"/>
         <param name="floorplane_scan_enable" value="$(arg fpscan_enable)" />
-        <param name="output_frame_id" value="/$(arg camera)_depth_frame"/>
+        <param name="output_frame_id" value="$(arg frame_id)"/>
         <remap from="image" to="$(arg camera)/$(arg depth)/image_raw"/>
         <remap from="scan" to="$(arg scan_topic)"/>
         <!-- Somehow topics here get prefixed by "$(arg camera)" when not inside an app namespace,

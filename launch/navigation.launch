@@ -1,22 +1,18 @@
 <launch>
-	<param name="robot_description" textfile="$(find roboraider)/description/roboraider.urdf" />
-	
-	<node pkg="tf" type="static_transform_publisher" name="base_to_xtion_broadcaster" 
-		args="-0.112 0.0375 0.3175 0 0 0 base_link camera_depth_frame 100" />
-<!--	<node pkg="tf" type="static_transform_publisher" name="base_to_rgbcamera_broadcaster"
-                args="-0.112 0.0125 0.3175 -1.57 0 -1.57 base_link camera_rgb_optical_frame 100" />-->
-    <node pkg="tf" type="static_transform_publisher" name="base_to_sonar_broadcaster" 
-        args="0.16 0.0 0.075 0 0 0 base_link sonar 100" />
+    <param name="robot_description" textfile="$(find roboraider)/description/roboraider.urdf" />
+    <node  name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node  name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
         
-        
-    <include file="$(find roboraider)/launch/base_controller.launch" />
+    <include file="$(find roboraider)/launch/base_controller.launch" >
+        <arg name="odom_frame_id" value="odom" />
+        <arg name="sonar_frame_id" value="sonar_sensor_frame" />
+    </include>
     
-	<include file="$(find roboraider)/launch/fake_laser.launch" >
-		<arg name="skipframes" value="1" />
-		<arg name="fpscan_enable" value="False" />
-	</include>
+    <include file="$(find roboraider)/launch/rplidar.launch" >
+        <arg name="frame_id" value="rplidar_sensor_frame" />
+    </include>
 
-	<arg name="map" default="map_baldham_eg.yaml" />
+	<arg name="map" default="map_baldham.yaml" />
 	<node name="map_server" pkg="map_server" type="map_server" args="$(find roboraider)/maps/$(arg map)" required="true" />
 
 	<include file="$(find roboraider)/launch/amcl.launch" />

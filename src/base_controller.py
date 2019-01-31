@@ -29,14 +29,17 @@ from math import sin, cos, pi, degrees
 from geometry_msgs.msg import Quaternion, Twist, Pose
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Range
+from std_msgs.msg import String
 from tf.broadcaster import TransformBroadcaster
 
  
 """ Class to receive Twist commands and publish Odometry data """
 class BaseController:
-    def __init__(self, arduino, base_frame):
+    def __init__(self, arduino, base_frame_id):
         self.arduino		= arduino
-        self.base_frame 	= base_frame
+        self.base_frame_id 	= base_frame_id
+        self.odom_frame_id  = rospy.get_param("~odom_frame_id", "odom")
+        self.sonar_frame_id = rospy.get_param("~sonar_frame_id", "sonar")
         self.cmd_vel_timeout= float(rospy.get_param("~cmd_vel_timeout", 1.0))
         self.acc_lim 		= float(rospy.get_param('~acc_lim', 0.5))
         self.acc_lim_diff	= float(rospy.get_param('~acc_lim_diff', 0.5))
@@ -60,18 +63,22 @@ class BaseController:
         self.last_cmd_vel = now	# time of last cmd_vel callback
         self.last_poll = now	# time of last cmd_vel callback
         
+        self.last_batt_warning = now
+        self.batt_warning_rate = 30.0 # seconds
+        
         # subscriptions
         rospy.Subscriber("cmd_vel", Twist, self.cmdVelCallback)
         
         # Clear any old odometry info
         self.arduino.reset_odometry()
         
-        # Set up the odometry publisher and broadcaster
-        self.odomPub = rospy.Publisher('odom', Odometry, queue_size=10)
-        self.odomBroadcaster = TransformBroadcaster()
-        
-        # Set up the sonar range publisher
+        # Set up publishers and broadcasters
+        self.odomPub  = rospy.Publisher('odom', Odometry, queue_size=10)
         self.sonarPub = rospy.Publisher('sonar', Range, queue_size=10)
+        self.ttsPub   = rospy.Publisher('tts', String, queue_size=10, latch=True)
+        self.odomBroadcaster = TransformBroadcaster()        
+        
+        self.ttsPub.publish("Let's go!")
         
         rospy.loginfo("Started base controller")
         
@@ -82,8 +89,16 @@ class BaseController:
         v_step  = self.acc_lim * t_delta.to_sec()
         vdelta_step = self.acc_lim_diff * t_delta.to_sec()
         
+        # read battery status
+        battVoltage = self.arduino.get_battery()
+        # rospy.loginfo("battery: " + str(battVoltage) + " V")
+        if battVoltage < 11.0 and now > (self.last_batt_warning + rospy.Duration(self.batt_warning_rate)):
+            #rospy.loginfo("batt warning, voltage: " + str(battVoltage) + " V")
+            self.ttsPub.publish("My battery is running low")
+            self.last_batt_warning = now
+        
         # Read the odometry
-        pose = self.arduino.get_pose()
+        pose = self.arduino.get_pose() ###
         self.x      = pose[0]
         self.y      = pose[1]
         self.theta  = pose[2]
@@ -101,12 +116,12 @@ class BaseController:
             (self.x, self.y, 0), 
             (quaternion.x, quaternion.y, quaternion.z, quaternion.w),
             now,
-            self.base_frame,
-            "odom")
+            self.base_frame_id,
+            self.odom_frame_id)
     
         odom = Odometry()
-        odom.header.frame_id = "odom"
-        odom.child_frame_id = self.base_frame
+        odom.header.frame_id = self.odom_frame_id
+        odom.child_frame_id = self.base_frame_id
         odom.header.stamp = now
         odom.pose.pose.position.x = self.x
         odom.pose.pose.position.y = self.y
@@ -119,10 +134,10 @@ class BaseController:
         self.odomPub.publish(odom)
         
         
-        self.sonarDist = self.arduino.get_sonar_distance()
+        self.sonarDist = self.arduino.get_sonar_distance() ###
         
         sonar = Range()
-        sonar.header.frame_id = "sonar"
+        sonar.header.frame_id = self.sonar_frame_id
         sonar.header.stamp = now
         sonar.radiation_type = sonar.ULTRASOUND
         sonar.field_of_view = 15.0 * math.pi/180.0
@@ -163,11 +178,11 @@ class BaseController:
         vright_cmd = self.v_cmd + self.vdelta_cmd/2.0
         
         #rospy.loginfo("dtheta_des: " + str(self.dtheta_des) + " rad/s\tdtheta " + str(self.dtheta) + " rad/s\tvdelta_cmd " + str(self.vdelta_cmd) + " m/s")
-        rospy.loginfo("vleft_cmd: " + str(vleft_cmd) + " m/s\tvright_cmd " + str(vright_cmd) + " m/s")
+        #rospy.loginfo("vleft_cmd: " + str(vleft_cmd) + " m/s\tvright_cmd " + str(vright_cmd) + " m/s")
 	
         # Set motor speeds
         if not self.stopped:
-            self.arduino.motor_command(vleft_cmd, vright_cmd)
+            self.arduino.motor_command(vleft_cmd, vright_cmd) ###
         
         self.last_poll = now;
             

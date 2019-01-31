@@ -1,18 +1,11 @@
 <launch>
 	<param name="robot_description" textfile="$(find roboraider)/description/roboraider.urdf" />
-	
-	<node pkg="tf" type="static_transform_publisher" name="base_to_xtion_broadcaster" 
-		args="-0.112 0.0375 0.3175 0 0 0 base_link camera_depth_frame 100" />
-		
-	<node pkg="tf" type="static_transform_publisher" name="base_to_sonar_broadcaster" 
-        args="0.16 0.0 0.075 0 0 0 base_link sonar 100" />
-
-    <include file="$(find roboraider)/launch/base_controller.launch" />
+	<node  name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node  name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     
-	<include file="$(find roboraider)/launch/fake_laser.launch" >
-		<arg name="skipframes" value="0" />
-		<arg name="fpscan_enable" value="False" />
-	</include>
+    <include file="$(find roboraider)/launch/rplidar.launch" >
+        <arg name="frame_id" value="rplidar_sensor_frame" />
+    </include>
 
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find roboraider)/rviz/test_odom.rviz" />
 </launch>

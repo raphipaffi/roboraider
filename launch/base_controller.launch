@@ -1,4 +1,7 @@
 <launch>
+    <arg name = "odom_frame_id" default="odom"/>
+    <arg name = "sonar_frame_id" default="sonar"/>
+    
     <node pkg="roboraider" type="arduino_node.py" name="base_controller" required="true">
         <param name="port" value="/dev/ttyACM0"/>
         <param name="baud" value="115200"/>
@@ -8,5 +11,7 @@
         <param name="cmd_vel_timeout" value="1"/>
         <param name="acc_lim" value="2.0"/>
         <param name="acc_lim_diff" value="5.0"/>
+        <param name="odom_frame_id" value="$(arg odom_frame_id)"/>
+        <param name="sonar_frame_id" value="$(arg sonar_frame_id)"/>
     </node>
 </launch>

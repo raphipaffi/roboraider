@@ -118,7 +118,7 @@ void setup() {
   lcd.setCursor(14, 1);
   lcd.print("V");
   lcd.setCursor(0, 0);
-  lcd.print("IP 192.168.178.5");
+  lcd.print("IP pending...");
 }
 
 
@@ -196,6 +196,18 @@ void handleCommand() {
 
 void parseCommand() {
   switch (buffer[0]) {
+    case SET_IP: // expected format 'i xxx.xxx.xxx.xxx'
+    {
+      // drop last character
+      int length = strlen(buffer);
+      buffer[length-1] = '\0';
+      // put ip on lcd
+      lcd.setCursor(0, 0);
+      lcd.print(buffer + 2);
+      Serial.println("OK");
+      break;
+    }
+      
     case GET_BAUDRATE:
       Serial.println(BAUDRATE);
       break;
@@ -230,6 +242,10 @@ void parseCommand() {
         Serial.println("-1.000");
       break;
 
+    case READ_BATTERY:
+      Serial.println(battVoltage/10, 1);
+      break;
+
     case RESET_ODOMETRY:
       imu.zero_gyros();
       roboclaw.ResetEncoders(address);
@@ -238,12 +254,14 @@ void parseCommand() {
       break;
 
     case MOTOR_COMMAND: // expected format 'm +0.00 +0.00'
+    {
       buffer[7] = 0; // overwrite separator between first and second value with 0
       float v_left  = atof(buffer + 2); // skip first two bytes ('m ') to access first value
       float v_right = atof(buffer + 8); // skip first eight bytes ('m +0.00 ') to access second value
       roboclaw.SpeedM1M2(address, v_left * SPEED2QPPS, v_right * SPEED2QPPS);
       Serial.println("OK");
       break;
+    }    
   }
 }
 

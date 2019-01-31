@@ -24,6 +24,7 @@ from base_controller import BaseController
 from geometry_msgs.msg import Twist
 import os, time
 import thread
+import socket
 
 class ArduinoROS():
     def __init__(self):
@@ -49,6 +50,11 @@ class ArduinoROS():
         self.controller.connect()
         self.controller.reset_odometry()
         rospy.loginfo("Connected to Arduino on port " + self.port + " at " + str(self.baud) + " baud")
+        
+        # inform Arduino about IP address
+        ip = socket.gethostbyname(socket.gethostname())
+        rospy.loginfo("send IP to Arduino: " + ip)
+        self.controller.set_ip(ip)
         
         # Initialize the base controller
         self.base_frame = rospy.get_param("~base_frame", 'base_link')
