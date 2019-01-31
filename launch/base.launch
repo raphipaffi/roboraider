@@ -1,0 +1,12 @@
+<launch>
+
+    <node pkg="picotts" type="picotts.exe" name="picotts" output="screen" required="true">              
+          <param name="engine" value="microsoft"/>
+    </node>
+    
+    <include file="$(find roboraider)/launch/base_controller.launch" >
+        <arg name="odom_frame_id" value="odom" />
+        <arg name="sonar_frame_id" value="sonar_sensor_frame" />
+    </include>
+    
+</launch>

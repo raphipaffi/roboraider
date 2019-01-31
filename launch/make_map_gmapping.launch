@@ -1,0 +1,15 @@
+<launch>
+	<param name="robot_description" textfile="$(find roboraider)/description/roboraider.urdf" />
+    <node  name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node  name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    
+    <include file="$(find roboraider)/launch/rplidar.launch" >
+        <arg name="frame_id" value="rplidar_sensor_frame" />
+    </include>
+    
+	<include file="$(find roboraider)/launch/gmapping.launch" />
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find roboraider)/rviz/gmapping.rviz" />
+
+	<!-- rosrun map_server map_saver -f `rospack find roboraider`/maps/map_baldham -->
+</launch>
