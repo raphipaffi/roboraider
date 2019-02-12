@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <robot name="RoboRaider" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find roboraider)/description/roboraider.gazebo" />
 
     <link name="base_link">
         <!-- main body -->
@@ -109,6 +110,26 @@
     
     <link name="sonar_sensor_frame">
     </link>
+
+    <link name="imu_link">
+        <inertial>
+            <mass value="0.001"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.0001"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+            <box size="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+            <box size=".001 .001 .001"/>
+            </geometry>
+        </collision>
+    </link>
     
         
     <joint name="base_to_rplidar_sensor_frame" type="fixed">
@@ -135,45 +156,11 @@
         <origin xyz="0.16 0.0 0.065"/>
     </joint>
 
-    <gazebo>
-        <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
-            <commandTopic>cmd_vel</commandTopic>
-            <odometryTopic>odom</odometryTopic>
-            <odometryFrame>odom</odometryFrame>
-            <odometryRate>20.0</odometryRate>
-            <robotBaseFrame>base_link</robotBaseFrame>
-        </plugin>
-    </gazebo>
-
-    <gazebo reference="rplidar_sensor_sim_frame">
-        <sensor name="rplidar_sensor" type="ray">
-            <visualize>true</visualize>
-            <update_rate>10</update_rate>
-            <ray>
-                <scan>
-                    <horizontal>
-                        <samples>400</samples>
-                        <resolution>1</resolution>
-                        <min_angle>-3.1415927</min_angle>
-                        <max_angle>3.1415927</max_angle>
-                    </horizontal>
-                </scan>
-                <range>
-                    <min>0.15</min>
-                    <max>18.0</max>
-                    <resolution>0.01</resolution>
-                </range>
-                <noise>
-                    <type>gaussian</type>
-                    <mean>0.0</mean>
-                    <stddev>0.01</stddev>
-                </noise>
-            </ray>
-            <plugin name="rplidar_sensor_sim" filename="libgazebo_ros_laser.so">
-                <topicName>/scan</topicName>
-                <frameName>rplidar_sensor_sim_frame</frameName>
-            </plugin>
-        </sensor>
-  </gazebo>
-       
+    <joint name="imu_joint" type="fixed">
+        <axis xyz="1 0 0"/> <!-- 0 1 0 -->
+        <origin xyz="0 0 0.19"/>
+        <parent link="base_link"/>
+        <child link="imu_link"/>
+    </joint>
+ 
 </robot>

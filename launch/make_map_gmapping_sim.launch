@@ -1,0 +1,15 @@
+<launch>
+    <param name="robot_description" command="$(find xacro)/xacro '$(find roboraider)/description/roboraider.xacro'" />
+    <node  name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node  name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <!-- launch world simulation and spawn a robot into the simulated world -->
+    <include file="$(find gazebo_ros)/launch/willowgarage_world.launch" />
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model roboraider" />
+    
+	<include file="$(find roboraider)/launch/gmapping.launch" />
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find roboraider)/rviz/gmapping.rviz" />
+
+	<!-- rosrun map_server map_saver -f `rospack find roboraider`/maps/map_baldham -->
+</launch>
