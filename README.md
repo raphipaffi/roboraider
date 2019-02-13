@@ -30,7 +30,16 @@ $ sudo apt-get install openssh-server
 $ sudo apt-get install x11vnc
 ```
 * Open <b>Setting > Session and Startup</b>, select tab <b>Application Autostart</b>
-* Add a new entry with comand line <i>x11vnc -display :0</i>
+* Add a new entry with comand line <i>x11vnc -display :0 -loop -forever -shared</i>
+* Make sure that the system has a VIRTUAL display (check using <i>xrandr</i> in console)
+* If not, create a .conf file in /usr/share/X11/xorg.conf.d/ with the following content: <br />
+```
+Section "Device"
+    Identifier     "Device0"
+    Driver         "intel"
+    Option         "VirtualHeads" "1"
+EndSection
+```
 * Go to <b>Settings > Light Locker Settings</b>, turn everything to <b>Off</b>, set sliders to <b>0 minutes/never</b>.
 * Go to <b>Settings > Power Manager</b>, uncheck <b>Monitor Power Management Control</b> and go through the various tabs and set all the sliders to <b>0 minutes/never</b>.
 * If the system doesn’t shut down cleanly, sometimes the Grub boot manager will wait for a menu selection before booting. To avoid this, open the file <b>/etc/default/grub</b> and add the line: <br />
