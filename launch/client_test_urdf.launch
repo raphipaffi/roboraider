@@ -1,0 +1,5 @@
+<launch>
+    <!-- <include file="$(find roboraider)/launch/client_sim_robot.launch" /> -->
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find roboraider)/rviz/test_urdf.rviz" />
+</launch>

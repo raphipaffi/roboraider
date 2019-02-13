@@ -1,0 +1,12 @@
+<launch>
+    <!-- <include file="$(find roboraider)/launch/client_sim_robot.launch" /> -->
+
+	<include file="$(find roboraider)/launch/client_gmapping.launch" />
+	<include file="$(find roboraider)/launch/client_move_base.launch" />
+	<include file="$(find roboraider)/launch/client_frontier_exploration_lite.launch" />
+	<!-- <include file="$(find roboraider)/launch/client_frontier_exploration.launch" /> -->
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find roboraider)/rviz/gmapping_auto.rviz" />
+
+	<!-- rosrun map_server map_saver -f `rospack find roboraider`/maps/map_empty_app3 -->
+</launch>
