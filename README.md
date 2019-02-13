@@ -1,7 +1,7 @@
 # RoboRaider
 This is a ROS package for my home-built robot. The package requires
-* [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/)
-* [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu)
+* [Latest LTS release of Xubuntu](https://xubuntu.org/download)
+* [Latest LTS release of ROS](http://wiki.ros.org/ROS/Installation)
 * [Arduino 1.6.8](https://www.arduino.cc/en/main/software)
 * for a working tele-op panel in rviz: modified [ROS Visualization Tutorials](http://wiki.ros.org/visualization_tutorials)
 
@@ -13,9 +13,9 @@ Arduino libraries needed to compile the Arduino code for the low level controlle
 
 # Installation of Xubuntu
 (Most of these steps were copied from [OculusPrime Setup](http://www.xaxxon.com/documentation/view/oculus-prime-xubuntu-setup))
-* Download and install [Xubuntu 14.04 LTS 64-bit OS](https://xubuntu.org/release/14-04/).
-* When given the choice, set to <b>Login Automatically</b>.
-* Connect to your Wifi network, set to <b>Automatically connect when available</b> and use a static IP.
+* Download and install [Xubuntu](https://xubuntu.org/download).
+* When asked, set to <b>Login Automatically</b>.
+* Connect to Wifi network and set to <b>Automatically connect when available</b>.
 * Go to <b>Settings > Software and Updates</b>, change package repository reference to <b>Main Server</b>.
 * Update currently installed packages: <br />
 ```
@@ -40,10 +40,9 @@ Section "Device"
     Option         "VirtualHeads" "1"
 EndSection
 ```
-* Add a .sh file to the desktop with following content: <br />
+* Add a .sh file to the desktop with following content and make it executable: <br />
 ```
 #! /bin/bash
-
 xrandr --newmode "1920x1080"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
 xrandr --addmode VIRTUAL1 1920x1080
 xrandr --output VIRTUAL1 --mode 1920x1080
@@ -63,8 +62,9 @@ $ sudo update-grub
 * When applications crash, they ask if you want to send a report. Disable this feature by editing the file <b>/etc/default/apport</b> and change the line: `enabled=1` to `enabled=0`.
 * Go to <b>Settings > Software and Udates</b> and click on the <b>Updates</b> tab. Switch <b>Automatically Check for Updates</b> to <b>Never</b>
 * It should be OK to work on the system remotely from here onward.
-* Go to [www.google.com/chrome/browser](http://www.google.com/chrome/browser), download the 64-bit ‘.deb’ package and install it using Software Center.
+* Go to [www.google.com/chrome/browser](http://www.google.com/chrome/browser), download the 64-bit '.deb' package and install it using Software Center.
 * Run Google Chrome from the menu once and choose <b>set as default browser</b>.
+* Go to [https://code.visualstudio.com/](https://code.visualstudio.com/), download the '.deb' package and install it using Software Center.
 * USB ports are only available to root by default in Ubuntu. To give yourself access:
 ```
 $ sudo adduser user_name dialout
@@ -74,11 +74,7 @@ $ sudo adduser user_name dialout
 
 # ROS Setup
 (Most of these steps were copied from [OculusPrime Setup](http://www.xaxxon.com/documentation/view/oculus-prime-ros-installation))
-* Install ROS Indigo following the instructions at [wiki.ros.org/indigo/Installation/Ubuntu](http://wiki.ros.org/indigo/Installation/Ubuntu). Choose 'Desktop-Full Install.'
-* Install the required ROS Navigation packages: <br />
-```
-$ sudo apt-get install ros-indigo-move-base ros-indigo-map-server ros-indigo-amcl ros-indigo-openni2-launch ros-indigo-dwa-local-planner ros-indigo-gmapping
-```
+* Install ROS  following the instructions at [http://wiki.ros.org/ROS/Installation](http://wiki.ros.org/ROS/Installation). Choose 'Desktop-Full Install.'
 * Install Git: <br />
 ```
 $ sudo apt-get install git
