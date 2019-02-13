@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source /opt/ros/kinetic/setup.bash
-source /home/raphi/catkin_ws/devel/setup.bash
+source /opt/ros/melodic/setup.bash
+source ~/catkin_ws/devel/setup.bash
+
+export ROS_MASTER_URI=http://roboraider:11311
 
 roslaunch roboraider base.launch

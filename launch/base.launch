@@ -1,12 +1,24 @@
 <launch>
 
+    <!-- Start text-to-speech node -->
     <node pkg="picotts" type="picotts.exe" name="picotts" output="screen" required="true">              
           <param name="engine" value="microsoft"/>
     </node>
+
+    <!-- Load robot description incl. all fixed frame transforms -->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find roboraider)/description/roboraider.xacro'" />
+    <node  name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node  name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     
+    <!-- Start base controller publishing odom messages and listening to celocity commands -->
     <include file="$(find roboraider)/launch/base_controller.launch" >
         <arg name="odom_frame_id" value="odom" />
         <arg name="sonar_frame_id" value="sonar_sensor_frame" />
+    </include>
+
+    <!-- Start rplidar node publishing laser scans -->
+    <include file="$(find roboraider)/launch/rplidar.launch" >
+        <arg name="frame_id" value="rplidar_sensor_frame" />
     </include>
     
 </launch>

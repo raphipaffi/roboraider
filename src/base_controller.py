@@ -78,7 +78,7 @@ class BaseController:
         self.ttsPub   = rospy.Publisher('tts', String, queue_size=10, latch=True)
         self.odomBroadcaster = TransformBroadcaster()        
         
-        self.ttsPub.publish("Let's go!")
+        self.ttsPub.publish("Startup completed!")
         
         rospy.loginfo("Started base controller")
         
