@@ -61,15 +61,4 @@
         </sensor>
     </gazebo>
 
-  <!-- <gazebo>
-        <plugin name="imu_sensor_sim" filename="libgazebo_ros_imu.so">
-            <alwaysOn>true</alwaysOn>
-            <bodyName>base_link</bodyName>
-            <topicName>imu</topicName>
-            <serviceName>imu_service</serviceName>
-            <gaussianNoise>0.0</gaussianNoise>
-            <updateRate>10.0</updateRate>
-        </plugin>
-  </gazebo> -->
-
 </robot>

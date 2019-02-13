@@ -5,4 +5,4 @@ source ~/catkin_ws/devel/setup.bash
 
 export ROS_MASTER_URI=http://roboraider:11311
 
-roslaunch roboraider base.launch
+roslaunch roboraider robot_run.launch
