@@ -40,6 +40,15 @@ Section "Device"
     Option         "VirtualHeads" "1"
 EndSection
 ```
+* Add a .sh file to the desktop with following content: <br />
+```
+#! /bin/bash
+
+xrandr --newmode "1920x1080"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+xrandr --addmode VIRTUAL1 1920x1080
+xrandr --output VIRTUAL1 --mode 1920x1080
+xrandr --output DP2 --off
+```
 * Go to <b>Settings > Light Locker Settings</b>, turn everything to <b>Off</b>, set sliders to <b>0 minutes/never</b>.
 * Go to <b>Settings > Power Manager</b>, uncheck <b>Monitor Power Management Control</b> and go through the various tabs and set all the sliders to <b>0 minutes/never</b>.
 * If the system doesn’t shut down cleanly, sometimes the Grub boot manager will wait for a menu selection before booting. To avoid this, open the file <b>/etc/default/grub</b> and add the line: <br />
