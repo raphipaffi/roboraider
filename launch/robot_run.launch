@@ -21,4 +21,7 @@
         <arg name="frame_id" value="rplidar_sensor_frame" />
     </include>
     
+    <!-- Start astra depth camera -->
+    <include file="$(find astra_launch)/launch/astra.launch" />
+
 </launch>

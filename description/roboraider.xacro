@@ -105,7 +105,9 @@
         </inertial>
     </link>
     
-    <link name="orbbec_sensor_frame">
+    <!-- <link name="orbbec_sensor_frame">
+    </link> -->
+    <link name="camera_link">
     </link>
     
     <link name="sonar_sensor_frame">
@@ -115,7 +117,8 @@
     <joint name="base_to_rplidar_sensor_frame" type="fixed">
         <parent link="base_link"/>
         <child  link="rplidar_sensor_frame"/>
-        <origin xyz="0.075 0 0.2193" rpy="0 0 3.1415927"/>
+        <!-- <origin xyz="0.075 0 0.2193" rpy="0 0 3.1415927"/> -->
+        <origin xyz="0 0 0.2193" rpy="0 0 3.1415927"/>
     </joint>
 
     <joint name="base_to_rplidar_sensor_sim_frame" type="fixed">
@@ -124,9 +127,14 @@
         <origin xyz="0 0 0.2193" rpy="0 0 0"/>
     </joint>
     
-    <joint name="base_to_orbbec_sensor_frame" type="fixed">
+    <!-- <joint name="base_to_orbbec_sensor_frame" type="fixed">
         <parent link="base_link"/>
         <child  link="orbbec_sensor_frame"/>
+        <origin xyz="-0.112 0.0375 0.3175"/>
+    </joint> -->
+    <joint name="base_to_orbbec_sensor_frame" type="fixed">
+        <parent link="base_link"/>
+        <child  link="camera_link"/>
         <origin xyz="-0.112 0.0375 0.3175"/>
     </joint>
     
